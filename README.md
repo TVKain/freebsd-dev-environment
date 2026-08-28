@@ -23,7 +23,7 @@ Automated setup for FreeBSD kernel development environment using libvirt/KVM on 
 Run the installation script:
 
 ```bash
-sudo ./install_freebsd_dev.sh
+sudo ./install.sh
 ```
 
 This script will:
@@ -39,7 +39,7 @@ This script will:
 To remove the FreeBSD development environment:
 
 ```bash
-sudo ./cleanup_freebsd_dev.sh
+sudo ./cleanup.sh
 ```
 
 The cleanup script will:

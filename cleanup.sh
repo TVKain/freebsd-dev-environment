@@ -124,4 +124,4 @@ else
     echo "FreeBSD image: Preserved at $VM_IMAGE_DIR/$FREEBSD_IMAGE"
 fi
 echo ""
-echo "To reinstall, run: sudo ./install_freebsd_dev.sh"
+echo "To reinstall, run: sudo ./install.sh"

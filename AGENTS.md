@@ -128,7 +128,7 @@ local-hostname: freebsd-dev
 ### Installation Script
 The environment can be fully automated using the installation script:
 ```bash
-sudo ./install_freebsd_dev.sh
+sudo ./install.sh
 ```
 
 The installation script automates:
@@ -142,7 +142,7 @@ The installation script automates:
 ### Cleanup Script
 To completely remove the FreeBSD development environment:
 ```bash
-sudo ./cleanup_freebsd_dev.sh
+sudo ./cleanup.sh
 ```
 
 The cleanup script removes:
