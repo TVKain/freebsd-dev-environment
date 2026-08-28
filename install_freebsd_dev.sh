@@ -9,19 +9,24 @@ set -e
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SHARED_DIR="$SCRIPT_DIR/shared"
 CLOUD_INIT_DIR="/var/lib/libvirt/images/freebsd-dev/cloud-init"
+VM_IMAGE_DIR="/var/lib/libvirt/images/freebsd-dev"
 VM_NAME="freebsd-dev"
 NETWORK_NAME="mgmt-net"
 STATIC_IP="192.168.0.50"
 GATEWAY="192.168.0.1"
 HOST_SHARED_DIR="/home/ktran/freebsd_dev/shared"
+FREEBSD_VERSION="15.1"
+FREEBSD_IMAGE="FreeBSD-${FREEBSD_VERSION}-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2"
+FREEBSD_IMAGE_URL="https://download.freebsd.org/releases/VM-IMAGES/${FREEBSD_VERSION}-RELEASE/amd64/Latest/${FREEBSD_IMAGE}"
 
 echo "=== FreeBSD Development Environment Setup ==="
 echo "This script will:"
-echo "1. Configure NFS server on WSL"
-echo "2. Create libvirt network without DHCP"
-echo "3. Generate cloud-init configuration with static IP"
-echo "4. Define and start the FreeBSD VM"
-echo "5. Configure autostart for VM and network"
+echo "1. Download FreeBSD ${FREEBSD_VERSION} cloud-init image"
+echo "2. Configure NFS server on WSL"
+echo "3. Create libvirt network without DHCP"
+echo "4. Generate cloud-init configuration with static IP"
+echo "5. Define and start the FreeBSD VM"
+echo "6. Configure autostart for VM and network"
 echo ""
 
 # Check if running as root
@@ -30,8 +35,21 @@ if [ "$EUID" -ne 0 ]; then
     exit 1
 fi
 
-# Step 1: Install and configure NFS server
-echo "Step 1: Configuring NFS server..."
+# Step 1: Download FreeBSD cloud-init image
+echo "Step 1: Downloading FreeBSD ${FREEBSD_VERSION} cloud-init image..."
+mkdir -p "$VM_IMAGE_DIR"
+
+if [ ! -f "$VM_IMAGE_DIR/$FREEBSD_IMAGE" ]; then
+    echo "Downloading $FREEBSD_IMAGE from FreeBSD mirrors..."
+    wget -O "$VM_IMAGE_DIR/$FREEBSD_IMAGE" "$FREEBSD_IMAGE_URL"
+    echo "Download completed"
+else
+    echo "Image already exists at $VM_IMAGE_DIR/$FREEBSD_IMAGE"
+    echo "Skipping download"
+fi
+
+# Step 2: Install and configure NFS server
+echo "Step 2: Configuring NFS server..."
 if ! command -v exportfs &> /dev/null; then
     echo "Installing nfs-kernel-server..."
     apt-get update
@@ -82,7 +100,7 @@ virsh net-autostart "$NETWORK_NAME"
 echo "Network $NETWORK_NAME created and started"
 
 # Step 3: Generate cloud-init configuration
-echo "Step 3: Generating cloud-init configuration..."
+echo "Step 4: Generating cloud-init configuration..."
 mkdir -p "$CLOUD_INIT_DIR"
 
 # Meta-data
@@ -159,7 +177,7 @@ genisoimage -output seed.iso -volid cidata -joliet -rock user-data meta-data
 echo "Cloud-init configuration generated"
 
 # Step 4: Define and start VM
-echo "Step 4: Configuring VM..."
+echo "Step 5: Configuring VM..."
 if virsh list --all | grep -q "$VM_NAME"; then
     echo "VM $VM_NAME already exists, removing..."
     virsh destroy "$VM_NAME" 2>/dev/null || true
@@ -212,7 +230,7 @@ cat > /tmp/$VM_NAME.xml <<EOF
     <emulator>/usr/bin/qemu-system-x86_64</emulator>
     <disk type='file' device='disk'>
       <driver name='qemu' type='qcow2'/>
-      <source file='/var/lib/libvirt/images/freebsd-dev/FreeBSD-15.1-RELEASE-amd64-BASIC-CLOUDINIT-ufs.qcow2'/>
+      <source file='$VM_IMAGE_DIR/$FREEBSD_IMAGE'/>
       <target dev='vda' bus='virtio'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x07' function='0x0'/>
     </disk>
@@ -293,7 +311,7 @@ virsh autostart "$VM_NAME"
 echo "VM $VM_NAME defined and started"
 
 # Step 5: Wait for VM to boot and verify connectivity
-echo "Step 5: Waiting for VM to boot and acquire IP..."
+echo "Step 6: Waiting for VM to boot and acquire IP..."
 echo "This may take 30-60 seconds..."
 
 for i in {1..30}; do

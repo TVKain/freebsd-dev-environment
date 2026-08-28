@@ -20,3 +20,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.log
+
+# VM images (optional - uncomment if you want to ignore downloaded images)
+# *.qcow2

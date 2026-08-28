@@ -15,7 +15,8 @@ Automated setup for FreeBSD kernel development environment using libvirt/KVM on 
 - WSL2 on Linux
 - KVM/QEMU installed
 - libvirt installed
-- FreeBSD 15.1-RELEASE cloud-init image
+- wget (for downloading FreeBSD image)
+- Internet connection (for downloading FreeBSD image)
 
 ## Quick Start
 
@@ -26,11 +27,27 @@ sudo ./install_freebsd_dev.sh
 ```
 
 This script will:
-1. Install and configure NFS server on WSL
-2. Create libvirt network without DHCP
-3. Generate cloud-init configuration with static IP
-4. Define and start the FreeBSD VM
-5. Configure autostart for VM and network
+1. Download FreeBSD 15.1 cloud-init image (if not already present)
+2. Install and configure NFS server on WSL
+3. Create libvirt network without DHCP
+4. Generate cloud-init configuration with static IP
+5. Define and start the FreeBSD VM
+6. Configure autostart for VM and network
+
+## Cleanup
+
+To remove the FreeBSD development environment:
+
+```bash
+sudo ./cleanup_freebsd_dev.sh
+```
+
+The cleanup script will:
+1. Stop and remove the FreeBSD VM
+2. Remove the libvirt network configuration
+3. Remove cloud-init configuration
+4. Optionally remove the downloaded FreeBSD image (asks for confirmation)
+5. Optionally stop and disable the NFS server (asks for confirmation)
 
 ## Configuration
 

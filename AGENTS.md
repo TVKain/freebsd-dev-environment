@@ -123,6 +123,35 @@ local-hostname: freebsd-dev
 - **DHCP Conflicts**: Even with static IP configuration, DHCP client must be explicitly disabled to prevent conflicts
 - **Network Configuration**: Using cloud-init's native `network` section is more reliable than manual network configuration commands
 
+## Installation and Cleanup
+
+### Installation Script
+The environment can be fully automated using the installation script:
+```bash
+sudo ./install_freebsd_dev.sh
+```
+
+The installation script automates:
+1. **Image Download**: Downloads FreeBSD 15.1 cloud-init image from official mirrors
+2. **NFS Server**: Installs and configures NFS server on WSL
+3. **Network Setup**: Creates libvirt network without DHCP
+4. **Cloud-Init**: Generates cloud-init configuration with static IP and hostname
+5. **VM Creation**: Defines and starts the FreeBSD VM with proper configuration
+6. **Autostart**: Configures both VM and network to start automatically on system boot
+
+### Cleanup Script
+To completely remove the FreeBSD development environment:
+```bash
+sudo ./cleanup_freebsd_dev.sh
+```
+
+The cleanup script removes:
+1. **VM**: Stops and undefines the FreeBSD VM
+2. **Network**: Removes the libvirt network configuration
+3. **Cloud-Init**: Removes cloud-init configuration files
+4. **Image**: Optionally removes the downloaded FreeBSD image (with confirmation)
+5. **NFS Server**: Optionally stops and disables the NFS server (with confirmation)
+
 ## Setup Instructions
 
 ### File Sharing (NFS)
