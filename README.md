@@ -34,6 +34,16 @@ This script will:
 5. Define and start the FreeBSD VM
 6. Configure autostart for VM and network
 
+## Exercises
+
+FreeBSD kernel development exercises are available in the `exercises/` directory:
+
+- **Guides**: Step-by-step tutorials for learning kernel development
+- **Homework**: Assignments with automated grading
+- **Tools**: Grading and utility scripts
+
+See `exercises/README.md` for more details.
+
 ## Cleanup
 
 To remove the FreeBSD development environment:

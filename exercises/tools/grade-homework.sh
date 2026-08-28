@@ -7,7 +7,7 @@ set -e
 
 VM_IP="192.168.0.50"
 VM_USER="root"
-GRADING_SCRIPT="/mnt/shared/freebsd_dev/exercises/02-grading-tool.sh"
+GRADING_SCRIPT="/mnt/shared/freebsd_dev/exercises/tools/02-grading-tool.sh"
 
 echo "=========================================="
 echo "  FreeBSD Kernel Module Grading Utility"

@@ -7,6 +7,7 @@ set -e
 
 MODULE_NAME="mycounter"
 MODULE_PATH="/mnt/shared/freebsd-src/sys/modules/${MODULE_NAME}"
+GRADING_DIR="/mnt/shared/freebsd_dev/exercises/tools"
 TOTAL_POINTS=100
 SCORE=0
 PASSED_TESTS=0

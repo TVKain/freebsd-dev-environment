@@ -398,13 +398,13 @@ An automated grading tool is provided to test your implementation:
 
 **From WSL Host:**
 ```bash
-cd /home/ktran/freebsd_dev/exercises
+cd /home/ktran/freebsd_dev/exercises/tools
 ./grade-homework.sh
 ```
 
 **From FreeBSD VM:**
 ```bash
-cd /mnt/shared/freebsd_dev/exercises
+cd /mnt/shared/freebsd_dev/exercises/tools
 sh 02-grading-tool.sh
 ```
 
