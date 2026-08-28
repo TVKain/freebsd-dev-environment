@@ -1,0 +1,22 @@
+# Sensitive files
+.zshrc.local
+.env
+*.env
+
+# Large directories
+shared/freebsd-src/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
