@@ -111,9 +111,9 @@ runcmd:
   - mount -u -o rw /
   - sysrc sshd_enable=YES
   - sysrc sshd_permitrootlogin=YES
-  - service sshd start
-  - hostname freebsd-dev
   - sysrc hostname=freebsd-dev
+  - hostname freebsd-dev
+  - service sshd start
   - sysrc ifconfig_vtnet0="inet 192.168.0.50 netmask 255.255.255.0"
   - sysrc defaultrouter="192.168.0.1"
   - sysrc nameserver="8.8.8.8 8.8.4.4"
