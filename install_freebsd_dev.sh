@@ -107,19 +107,11 @@ users:
     ssh_authorized_keys:
       - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGhb0oLnSCJ3/yVsa0hgMWACtse56zKuUARGjn47Qfe ktran@W-9NVXZF4
 
-  - name: ktran
-    groups: wheel
-    ssh_authorized_keys:
-      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGhb0oLnSCJ3/yVsa0hgMWACtse56zKuUARGjn47Qfe ktran@W-9NVXZF4
-    shell: /bin/sh
-    sudo: ALL=(ALL) NOPASSWD:ALL
-
 runcmd:
   - mount -u -o rw /
   - sysrc sshd_enable=YES
   - sysrc sshd_permitrootlogin=YES
   - service sshd start
-  - pw groupmod wheel -m ktran
   - hostname freebsd-dev
   - sysrc hostname=freebsd-dev
   - sysrc ifconfig_vtnet0="inet 192.168.0.50 netmask 255.255.255.0"
@@ -311,7 +303,6 @@ echo "Shared Directory: $HOST_SHARED_DIR (host) -> /mnt/shared (VM)"
 echo ""
 echo "SSH Access:"
 echo "  ssh root@$STATIC_IP"
-echo "  ssh ktran@$STATIC_IP"
 echo ""
 echo "VM Management:"
 echo "  Start: sudo virsh start $VM_NAME"

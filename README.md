@@ -49,9 +49,6 @@ This script will:
 ```bash
 # SSH as root
 ssh root@192.168.0.50
-
-# SSH as user
-ssh ktran@192.168.0.50
 ```
 
 ## VM Management

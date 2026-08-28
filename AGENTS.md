@@ -85,7 +85,6 @@ mount -t nfs 192.168.0.1:/home/ktran/freebsd_dev/shared /mnt/shared
 ### SSH Access
 - Root login is enabled via SSH with your SSH key (configured via sysrc)
 - SSH as root: `ssh root@192.168.0.50`
-- SSH as user: `ssh ktran@192.168.0.50`
 - Fixed IP: 192.168.0.50
 
 ### VM Management Commands
