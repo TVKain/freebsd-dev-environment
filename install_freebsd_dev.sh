@@ -98,6 +98,19 @@ cat > "$CLOUD_INIT_DIR/user-data" <<'EOF'
 hostname: freebsd-dev
 manage_etc_hosts: true
 
+network:
+  version: 2
+  ethernets:
+    vtnet0:
+      dhcp4: false
+      addresses:
+        - 192.168.0.50/24
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+
 ssh_authorized_keys:
   - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGGhb0oLnSCJ3/yVsa0hgMWACtse56zKuUARGjn47Qfe ktran@W-9NVXZF4
 
@@ -111,16 +124,13 @@ runcmd:
   - mount -u -o rw /
   - sysrc sshd_enable=YES
   - sysrc sshd_permitrootlogin=YES
-  - sysrc hostname=freebsd-dev
-  - hostname freebsd-dev
   - sysrc ifconfig_vtnet0="inet 192.168.0.50 netmask 255.255.255.0"
   - sysrc defaultrouter="192.168.0.1"
   - sysrc nameserver="8.8.8.8 8.8.4.4"
   - sysrc dhclient_enable=NO
-  - sysrc nuageinit_enable=NO
+  - rm -f /etc/rc.conf.d/hostname
   - grep -v 'ifconfig_DEFAULT' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
   - grep -v 'dhclient' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
-  - grep -v 'nuageinit' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
   - rm -f /var/db/dhclient.leases.*
   - service netif restart
   - service routing restart
