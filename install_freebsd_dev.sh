@@ -113,12 +113,18 @@ runcmd:
   - sysrc sshd_permitrootlogin=YES
   - sysrc hostname=freebsd-dev
   - hostname freebsd-dev
-  - service sshd start
   - sysrc ifconfig_vtnet0="inet 192.168.0.50 netmask 255.255.255.0"
   - sysrc defaultrouter="192.168.0.1"
   - sysrc nameserver="8.8.8.8 8.8.4.4"
+  - sysrc dhclient_enable=NO
+  - sysrc nuageinit_enable=NO
+  - grep -v 'ifconfig_DEFAULT' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
+  - grep -v 'dhclient' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
+  - grep -v 'nuageinit' /etc/rc.conf > /tmp/rc.conf.tmp && mv /tmp/rc.conf.tmp /etc/rc.conf
+  - rm -f /var/db/dhclient.leases.*
   - service netif restart
   - service routing restart
+  - service sshd start
   - mkdir -p /mnt/shared
   - echo "192.168.0.1:/home/ktran/freebsd_dev/shared /mnt/shared nfs rw,late 0 0" >> /etc/fstab
   - mount -t nfs 192.168.0.1:/home/ktran/freebsd_dev/shared /mnt/shared
