@@ -392,13 +392,56 @@ fi
 kldunload mycounter
 ```
 
+### Automated Grading
+
+An automated grading tool is provided to test your implementation:
+
+**From WSL Host:**
+```bash
+cd /home/ktran/freebsd_dev/exercises
+./grade-homework.sh
+```
+
+**From FreeBSD VM:**
+```bash
+cd /mnt/shared/freebsd_dev/exercises
+sh 02-grading-tool.sh
+```
+
+The grading tool will automatically:
+- Compile your module
+- Load and test all sysctl parameters
+- Test thread safety with concurrent access
+- Validate input handling
+- Test persistence across module reloads
+- Calculate your score based on the grading criteria
+
+**Grading Breakdown:**
+- Module Compilation: 10 points
+- Module Loading: 10 points
+- Custom Sysctl Namespace: 5 points
+- Counter Parameter: 10 points
+- Increment Parameter: 10 points
+- Reset Parameter: 5 points
+- String Parameter: 5 points
+- Boolean Parameter: 5 points
+- Counter Validation: 5 points
+- Load Count Persistence: 5 points
+- Thread Safety - Basic: 10 points
+- Thread Safety - Stress: 10 points
+- Module Unloading: 5 points
+- Code Quality (manual): 5 points
+
+**Total: 100 points**
+
 ### Submission
 
 When you're ready to submit your homework:
-1. Ensure your module compiles and loads cleanly
-2. Test all the functionality described above
-3. Document any issues or limitations
+1. Run the automated grading tool to verify your implementation
+2. Ensure you achieve at least 70 points (passing grade)
+3. Document any issues or limitations in comments
 4. Be prepared to explain your implementation choices
+5. Submit your module code and grading results
 
 ### Common Pitfalls
 
