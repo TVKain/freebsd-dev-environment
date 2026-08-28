@@ -123,6 +123,40 @@ local-hostname: freebsd-dev
 - **DHCP Conflicts**: Even with static IP configuration, DHCP client must be explicitly disabled to prevent conflicts
 - **Network Configuration**: Using cloud-init's native `network` section is more reliable than manual network configuration commands
 
+## Kernel Development Concepts
+
+### Thread Safety in Kernel Modules
+When developing kernel modules, thread safety is critical:
+- **Context Switches**: The kernel can switch between threads at any time, potentially corrupting shared data
+- **Race Conditions**: Multiple threads accessing shared data simultaneously can cause incorrect results
+- **Mutex Protection**: Use `mtx_lock()` and `mtx_unlock()` to protect critical sections
+- **Deadlock Prevention**: Always unlock mutexes in all code paths, including error paths
+
+### Common Kernel Locking Patterns
+```c
+#include <sys/mutex.h>
+
+static struct mtx my_data_mtx;
+static int my_shared_data = 0;
+
+// Initialize in MOD_LOAD
+mtx_init(&my_data_mtx, "description", NULL, MTX_DEF);
+
+// Protect access
+mtx_lock(&my_data_mtx);
+my_shared_data++;
+mtx_unlock(&my_data_mtx);
+
+// Cleanup in MOD_UNLOAD
+mtx_destroy(&my_data_mtx);
+```
+
+### Kernel Context Awareness
+- **Preemptive Multitasking**: Kernel code can be interrupted at any time
+- **Multiple CPUs**: Code can run simultaneously on different CPU cores
+- **Interrupt Context**: Hardware interrupts can preempt your code
+- **Always protect shared data** with appropriate locking mechanisms
+
 ## Installation and Cleanup
 
 ### Installation Script
